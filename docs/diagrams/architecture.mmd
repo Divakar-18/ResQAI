@@ -1,0 +1,9 @@
+flowchart LR
+  U[Citizen / Volunteer / Coordinator]
+  U -->|HTTP| C[React + TanStack Router]
+  C -->|RPC| S[TanStack server fns\nCloudflare Workers]
+  S --> DB[(Supabase Postgres\n+ RLS + Realtime)]
+  S --> AI[Groq API\nllama-3.3-70b-versatile]
+  S --> DIS[Discord Webhook]
+  S --> EM[Lovable Email]
+  DB -.realtime.-> C

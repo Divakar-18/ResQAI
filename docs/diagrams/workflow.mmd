@@ -1,0 +1,11 @@
+flowchart TD
+  A[Citizen submits report] --> B[Persist request in Postgres]
+  B --> C[Call Groq classifier]
+  C --> D{confidence >= 0.80?}
+  D -- Yes --> E[AI Matching Engine]
+  E --> F[Assign top volunteer]
+  F --> G[Send email + Discord alert]
+  G --> H[Audit log]
+  D -- No --> R[Human review queue]
+  R --> H
+  H --> L[Realtime dashboard update]

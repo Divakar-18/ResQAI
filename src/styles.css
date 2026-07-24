@@ -1,0 +1,153 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+@import "leaflet/dist/leaflet.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * ResQAI — Command Center design system.
+ * Dark ops-center. Deep navy field, cyan telemetry, red/amber criticality.
+ * All color tokens are oklch. Never hardcode colors in components.
+ */
+
+@theme inline {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-critical: var(--critical);
+  --color-high: var(--high);
+  --color-medium: var(--medium);
+  --color-low: var(--low);
+  --color-success: var(--success);
+  --color-info: var(--info);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-grid: var(--grid);
+}
+
+:root {
+  --radius: 0.5rem;
+
+  /* Deep command-center night */
+  --background: oklch(0.14 0.03 258);
+  --foreground: oklch(0.96 0.01 240);
+
+  --surface-1: oklch(0.18 0.03 258);
+  --surface-2: oklch(0.22 0.035 258);
+
+  --card: oklch(0.18 0.03 258);
+  --card-foreground: oklch(0.96 0.01 240);
+  --popover: oklch(0.19 0.03 258);
+  --popover-foreground: oklch(0.96 0.01 240);
+
+  /* Cyan telemetry primary */
+  --primary: oklch(0.75 0.15 220);
+  --primary-foreground: oklch(0.14 0.03 258);
+
+  --secondary: oklch(0.26 0.04 258);
+  --secondary-foreground: oklch(0.96 0.01 240);
+
+  --muted: oklch(0.24 0.03 258);
+  --muted-foreground: oklch(0.68 0.02 240);
+
+  --accent: oklch(0.78 0.18 210);
+  --accent-foreground: oklch(0.14 0.03 258);
+
+  --destructive: oklch(0.65 0.24 20);
+  --destructive-foreground: oklch(0.98 0.01 240);
+
+  --border: oklch(0.28 0.03 258 / 60%);
+  --input: oklch(0.24 0.03 258);
+  --ring: oklch(0.75 0.15 220);
+
+  /* Criticality scale */
+  --critical: oklch(0.65 0.26 20);
+  --high: oklch(0.75 0.18 45);
+  --medium: oklch(0.82 0.15 90);
+  --low: oklch(0.72 0.14 160);
+  --success: oklch(0.72 0.17 160);
+  --info: oklch(0.75 0.15 220);
+  --grid: oklch(0.3 0.03 258 / 40%);
+}
+
+/* Force dark scheme app-wide */
+html { color-scheme: dark; }
+
+@layer base {
+  * { border-color: var(--color-border); }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-image:
+      radial-gradient(1200px 600px at 10% -10%, oklch(0.24 0.08 220 / 0.35), transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, oklch(0.22 0.1 260 / 0.28), transparent 60%);
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
+  code, pre, .mono { font-family: var(--font-mono); }
+}
+
+@utility glass {
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--surface-1) 92%, transparent),
+    color-mix(in oklab, var(--surface-2) 85%, transparent));
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+
+@utility grid-bg {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@utility text-glow-primary {
+  text-shadow: 0 0 24px color-mix(in oklab, var(--primary) 55%, transparent);
+}
+
+@utility pulse-critical {
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--critical) 70%, transparent);
+  animation: pulse-critical 1.8s infinite;
+}
+@keyframes pulse-critical {
+  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--critical) 60%, transparent); }
+  70%  { box-shadow: 0 0 0 14px color-mix(in oklab, var(--critical) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--critical) 0%, transparent); }
+}
+
+/* Leaflet dark overrides */
+.leaflet-container { background: var(--surface-1); border-radius: var(--radius-lg); }
+.leaflet-tile { filter: hue-rotate(180deg) invert(0.92) contrast(0.9) saturate(0.7) brightness(0.95); }
+.leaflet-control-attribution { background: color-mix(in oklab, var(--surface-2) 85%, transparent) !important; color: var(--muted-foreground) !important; }
+.leaflet-control-attribution a { color: var(--primary) !important; }
